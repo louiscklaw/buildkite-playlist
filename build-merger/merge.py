@@ -21,6 +21,14 @@ GITHUB_TOKEN = "os.environ['GITHUB_TOKEN']"
 
 PUSH_URI="https://{}@github.com/{}".format(GITHUB_TOKEN, BUILDKITE_PIPELINE_SLUG)
 
+TEMP_DIR = local('mktemp -d', capture=True)
+
+def get_develop_branch():
+  os.system(f'git clone "{PUSH_URI}" "{TEMP_DIR}"')
+
+def clear_develop_branch():
+  os.system(f'rm -rf {TEMP_DIR}')
+
 
 def run_command(command_body):
   command_result = local(command_body, capture=True)
@@ -32,6 +40,7 @@ if (m == None ) :
   print('skipping merge for branch {}'.format(BUILDKITE_BRANCH))
   slack_message('skip merging for BUILD #{} `{}` from `{}` to `{}`'.format(BUILDKITE_BUILD_NUMBER, BUILDKITE_PIPELINE_SLUG, BUILDKITE_BRANCH, BRANCH_TO_MERGE_INTO), '#travis-build-result')
 else:
+  get_develop_branch()
   with lcd(TEMP_DIR), settings(warn_only=True):
     print('checkout {} branch'.format(BRANCH_TO_MERGE_INTO))
     run_command('git checkout {}'.format(BRANCH_TO_MERGE_INTO))
@@ -46,3 +55,5 @@ else:
 
     print('push commit')
     run_command("git push {} {}".format(PUSH_URI, BRANCH_TO_MERGE_INTO))
+
+  clear_develop_branch()
