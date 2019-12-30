@@ -1,3 +1,7 @@
 steps:
-  - label: hello docker
-    command: echo 'hello slack'
+  - label: hello merger
+    command:
+      - "pwd"
+      - "cd build-merger"
+      - "pipenv sync"
+      - "pipenv run python3 ./build-merger/merge.py"
