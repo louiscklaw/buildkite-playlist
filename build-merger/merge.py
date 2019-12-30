@@ -38,7 +38,7 @@ def run_command(command_body):
 m = re.match(BRANCH_TO_MERGE_REGEX, BUILDKITE_BRANCH)
 if (m == None ) :
   print('skipping merge for branch {}'.format(BUILDKITE_BRANCH))
-  slack_message('skip merging for BUILD #{} `{}` from `{}` to `{}`'.format(BUILDKITE_BUILD_NUMBER, BUILDKITE_PIPELINE_SLUG, BUILDKITE_BRANCH, BRANCH_TO_MERGE_INTO), '#travis-build-result')
+  # slack_message('skip merging for BUILD #{} `{}` from `{}` to `{}`'.format(BUILDKITE_BUILD_NUMBER, BUILDKITE_PIPELINE_SLUG, BUILDKITE_BRANCH, BRANCH_TO_MERGE_INTO), '#travis-build-result')
 else:
   get_develop_branch()
   with lcd(TEMP_DIR), settings(warn_only=True):
@@ -48,10 +48,10 @@ else:
     print('Merging "{}"'.format(BUILDKITE_COMMIT))
     result_to_check = run_command('git merge --ff-only "{}"'.format(BUILDKITE_COMMIT))
 
-    if result_to_check.failed:
-      slack_message('error found during merging BUILD{} `{}` from `{}` to `{}`'.format(BUILDKITE_BUILD_NUMBER, BUILDKITE_PIPELINE_SLUG, BUILDKITE_BRANCH, BRANCH_TO_MERGE_INTO), '#travis-build-result')
-    else:
-      slack_message('merging BUILD{} from {} `{}` to `{}` done'.format(BUILDKITE_BUILD_NUMBER, BUILDKITE_PIPELINE_SLUG, BUILDKITE_BRANCH, BRANCH_TO_MERGE_INTO), '#travis-build-result')
+    # if result_to_check.failed:
+      # slack_message('error found during merging BUILD{} `{}` from `{}` to `{}`'.format(BUILDKITE_BUILD_NUMBER, BUILDKITE_PIPELINE_SLUG, BUILDKITE_BRANCH, BRANCH_TO_MERGE_INTO), '#travis-build-result')
+    # else:
+      # slack_message('merging BUILD{} from {} `{}` to `{}` done'.format(BUILDKITE_BUILD_NUMBER, BUILDKITE_PIPELINE_SLUG, BUILDKITE_BRANCH, BRANCH_TO_MERGE_INTO), '#travis-build-result')
 
     print('push commit')
     run_command("git push {} {}".format(PUSH_URI, BRANCH_TO_MERGE_INTO))
