@@ -9,4 +9,6 @@ steps:
       - "pwd"
       - "cd build-merger"
       - "pipenv sync"
+      - "pwd"
+      - 'ls -l'
       - "pipenv run python3 ./merge.py"
