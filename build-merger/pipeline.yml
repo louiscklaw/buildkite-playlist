@@ -1,3 +1,7 @@
 steps:
   - label: hello merger
-    command: pwd
+    command:
+      - "pwd"
+      - "cd build-merger"
+      - "pipenv sync"
+      - "pipenv run python3 ./build-merger/merge.py"
