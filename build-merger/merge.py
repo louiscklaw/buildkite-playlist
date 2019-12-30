@@ -19,7 +19,7 @@ BUILDKITE_COMMIT = os.environ['BUILDKITE_COMMIT']
 
 GITHUB_TOKEN = "os.environ['GITHUB_TOKEN']"
 
-PUSH_URI=f"https://github.com/{BUILDKITE_PIPELINE_SLUG}"
+PUSH_URI=f"git@github.com:louiscklaw/{BUILDKITE_PIPELINE_SLUG}.git"
 
 TEMP_DIR = local('mktemp -d', capture=True)
 
